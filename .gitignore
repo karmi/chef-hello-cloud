@@ -1,5 +1,11 @@
 .DS_Store
 tmp/
+!tmp/.gitkeep
 log/
 
+Gemfile.lock
+Berksfile.lock
+.vagrant
+
 site-cookbooks/
+!site-cookbooks/.gitkeep
