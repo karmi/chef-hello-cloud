@@ -1,5 +1,6 @@
 # Base
 cookbook 'build-essential'
+cookbook 'apt'
 cookbook 'curl'
 cookbook 'vim'
 
