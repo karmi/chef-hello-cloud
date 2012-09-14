@@ -80,6 +80,7 @@ Vagrant::Config.run do |vagrant|
       config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
       config.vm.network :hostonly, node[:ip]
+      config.vm.customize { |vm| vm.memory_size = 256 }
 
       # Enable provisioning with Chef Server
       config.vm.provision :chef_client do |chef|
