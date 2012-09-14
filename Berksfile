@@ -10,4 +10,8 @@ cookbook 'haproxy'
 
 # Database
 cookbook 'postgresql'
-cookbook 'redis'
+cookbook 'redisio'
+
+# Search
+cookbook 'java'
+cookbook 'elasticsearch', :git => 'git://github.com/karmi/cookbook-elasticsearch.git'

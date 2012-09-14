@@ -6,6 +6,19 @@ rescue LoadError => e
   raise e
 end
 
+elasticsearch_attributes = {
+  :cluster_name => "chef-hello-cloud",
+
+  :mlockall => false,
+
+  :nginx => {
+    :port  => 80,
+    :user  => 'www-data',
+    :users => [{ username: 'hello', password: 'cloud' }],
+    :allow_cluster_api => true
+  }
+}
+
 nodes = {
 
   'application-1' => {
@@ -36,7 +49,23 @@ nodes = {
     :roles    => ['database'],
     :ip       => '33.33.33.20',
     :attributes => {}
-  },  
+  },
+
+  'elasticsearch-1' => {
+    :roles    => ['elasticsearch'],
+    :ip       => '33.33.33.31',
+    :attributes => {
+      :elasticsearch => elasticsearch_attributes
+    }
+  },
+
+  'elasticsearch-2' => {
+    :roles    => ['elasticsearch'],
+    :ip       => '33.33.33.32',
+    :attributes => {
+      :elasticsearch => elasticsearch_attributes
+    }
+  }
 
 }
 
@@ -68,7 +97,7 @@ Vagrant::Config.run do |vagrant|
                           }.deep_merge(node[:attributes])
       end
     end
-  
+
   end
 
 end
