@@ -6,20 +6,36 @@ rescue LoadError => e
   raise e
 end
 
-elasticsearch_attributes = {
-  :cluster_name => "chef-hello-cloud",
-
-  :mlockall => false,
-
-  :nginx => {
-    :port  => 80,
-    :user  => 'www-data',
-    :users => [{ username: 'hello', password: 'cloud' }],
-    :allow_cluster_api => true
-  }
-}
-
 nodes = {
+
+  'database' => {
+    :roles    => ['database'],
+    :ip       => '33.33.33.20',
+    :attributes => {
+      :postgresql => {
+        :listen_addresses => "*"
+      }
+    }
+  },
+
+  'elasticsearch-1' => {
+    :roles    => ['elasticsearch'],
+    :ip       => '33.33.33.31',
+    :attributes => {
+      :elasticsearch => {
+        :cluster_name => "chef-hello-cloud",
+
+        :mlockall => false,
+
+        :nginx => {
+          :port  => 80,
+          :user  => 'www-data',
+          :users => [{ username: 'hello', password: 'cloud' }],
+          :allow_cluster_api => true
+        }
+      }
+    }
+  },
 
   'application-1' => {
     :roles    => ['application'],
@@ -27,44 +43,10 @@ nodes = {
     :attributes => {}
   },
 
-  'application-2' => {
-    :roles    => ['application'],
-    :ip       => '33.33.33.12',
-    :attributes => {}
-  },
-
-  'application-3' => {
-    :roles    => ['application'],
-    :ip       => '33.33.33.13',
-    :attributes => {}
-  },
-
   'load-balancer' => {
     :roles    => ['load_balancer'],
     :ip       => '33.33.33.10',
     :attributes => {}
-  },
-
-  'database' => {
-    :roles    => ['database'],
-    :ip       => '33.33.33.20',
-    :attributes => {}
-  },
-
-  'elasticsearch-1' => {
-    :roles    => ['elasticsearch'],
-    :ip       => '33.33.33.31',
-    :attributes => {
-      :elasticsearch => elasticsearch_attributes
-    }
-  },
-
-  'elasticsearch-2' => {
-    :roles    => ['elasticsearch'],
-    :ip       => '33.33.33.32',
-    :attributes => {
-      :elasticsearch => elasticsearch_attributes
-    }
   }
 
 }
