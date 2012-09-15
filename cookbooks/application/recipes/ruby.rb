@@ -1,26 +1,27 @@
+@rvm_username  = node.attribute?(:vagrant) ? 'vagrant' : Chef::Config[:ssh_user]
+@rvm_trace     = Chef::Config[:log_level] == 'debug' ? '--trace' : ''
+
+Chef::Log.info "RVM will be installed as user: #{@rvm_username}"
+
 group "rvm" do
   members [ "root" ]
   action :create
 end
 
 bash "install RVM" do
-  puts Chef::Config[:ssh_user]
-
-  username  = node.attribute?(:vagant) ? 'vagrant' : Chef::Config[:ssh_user]
-  trace     = Chef::Config[:log_level] == 'debug' ? '--trace' : ''
-
-  Chef::Log.info "Installing RVM as #{username}"
-
-  user username
   code <<-COMMAND
-    sudo su - #{username} -m -c 'curl -# -k -L https://get.rvm.io | sudo bash -s stable #{trace}'
+    su - #{@rvm_username} -m -c 'curl -# -k -L https://get.rvm.io | sudo bash -s stable #{@rvm_trace}'
   COMMAND
 
-  not_if "test -d /usr/local/rvm/ && rvm info"
+  environment 'TERM' => 'dumb'
+  not_if      "test -d /usr/local/rvm/ && type rvm"
 end
 
 bash "install Ruby #{node.application[:ruby][:version]}" do
-  code "rvm install #{node.application[:ruby][:version]}"
+  code <<-COMMAND
+    su - #{@rvm_username} -m -c 'rvm install #{node.application[:ruby][:version]}'
+  COMMAND
 
-  not_if "rvm list | grep #{node.application[:ruby][:version]}"
+  environment 'TERM' => 'dumb'
+  not_if      "rvm list | grep #{node.application[:ruby][:version]}"
 end
