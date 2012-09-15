@@ -1,0 +1,46 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          application
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: <%= node.application[:name] %> initscript
+# Description:       Start <%= node.application[:name] %> application with Thin
+### END INIT INFO
+
+SCRIPT_NAME=/etc/init.d/application
+CONFIG_PATH=/etc/thin
+BUNDLE_CMD=bundle
+
+APPLICATION_DIR=<%= "#{node.application[:dir]}/#{node.application[:name]}" %>
+
+export REDISTOGO_URL=<%= ENV['REDISTOGO_URL'] %>
+export ELASTICSEARCH_URL=<%= ENV['ELASTICSEARCH_URL'] %>
+
+thin_command ()
+{
+  source /usr/local/rvm/scripts/rvm && \
+  cd $APPLICATION_DIR && \
+  bundle exec thin -C /etc/thin/<%= node.application[:name] %>.yml $1
+}
+
+
+case "$1" in
+  start)
+        thin_command start
+
+        ;;
+  stop)
+        thin_command stop
+        ;;
+  restart)
+        thin_command restart
+        ;;
+  *)
+        echo "Usage: $SCRIPT_NAME {start|stop|restart}" >&2
+        exit 3
+        ;;
+esac
+
+:

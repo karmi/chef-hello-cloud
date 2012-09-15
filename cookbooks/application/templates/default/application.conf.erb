@@ -1,0 +1,65 @@
+upstream <%= node.application[:name] %> {
+  <% node.application[:thin][:servers].times do |i| %>
+    server unix:<%= node.application[:thin][:sockets] %>/<%= node.application[:name] %>.<%= i %>.sock;
+  <% end %>
+}
+
+server {
+  listen 80;
+  server_name www.<%= node.application[:domain] %>;
+
+  gzip  on;
+  gzip_types application/javascript application/x-javascript text/css text/xml application/xml;
+
+  root <%= "#{node.application[:dir]}/#{node.application[:name]}" %>/public;
+
+  location / {
+
+    if ($request_uri ~* "\.(ico|css|js|gif|jpe?g|png)\?[0-9]+$") {
+        expires max;
+        break;
+    }
+
+    # needed to forward user's IP address to rails
+    proxy_set_header  X-Real-IP  $remote_addr;
+
+    # needed for HTTPS
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_max_temp_file_size 0;
+
+    # If the file exists as a static file serve it directly
+    if (-f $request_filename) {
+      break;
+    }
+
+    # Check for index.html for directory index
+    if (-f $request_filename/index.html) {
+      rewrite (.*) $1/index.html break;
+    }
+
+    # Rails caching (articles/1.html)
+    if (-f $request_filename.html) {
+      rewrite (.*) $1.html break;
+    }
+
+    # Pass request to Thin
+    if (!-f $request_filename) {
+      proxy_pass http://<%= node.application[:name] %>;
+      break;
+    }
+  }
+
+
+  location /assets {
+    access_log off;
+
+    add_header Cache-Control public;
+    add_header Last-Modified "";
+    add_header ETag "";
+
+    expires 1y;
+
+  }
+}
