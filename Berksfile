@@ -3,6 +3,7 @@ cookbook 'build-essential'
 cookbook 'apt'
 cookbook 'curl'
 cookbook 'vim'
+cookbook 'git'
 
 # Webserver
 cookbook 'nginx'
