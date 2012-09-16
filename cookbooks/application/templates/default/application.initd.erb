@@ -11,7 +11,7 @@
 
 SCRIPT_NAME=/etc/init.d/application
 CONFIG_PATH=/etc/thin
-BUNDLE_CMD=<%= `which bundle`.chomp %>
+BUNDLE_CMD=/usr/local/rvm/gems/ruby-<%= node.application[:ruby][:version] %>@global/bin/bundle
 
 APPLICATION_DIR=<%= "#{node.application[:dir]}/#{node.application[:name]}" %>
 
