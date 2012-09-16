@@ -11,7 +11,7 @@
 
 SCRIPT_NAME=/etc/init.d/application
 CONFIG_PATH=/etc/thin
-BUNDLE_CMD=bundle
+BUNDLE_CMD=<%= `which bundle`.chomp %>
 
 APPLICATION_DIR=<%= "#{node.application[:dir]}/#{node.application[:name]}" %>
 
@@ -22,7 +22,7 @@ thin_command ()
 {
   source /usr/local/rvm/scripts/rvm && \
   cd $APPLICATION_DIR && \
-  bundle exec thin -C /etc/thin/<%= node.application[:name] %>.yml $1
+  ruby $BUNDLE_CMD exec thin -C $CONFIG_PATH/<%= node.application[:name] %>.yml $1
 }
 
 
