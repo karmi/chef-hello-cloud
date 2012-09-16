@@ -21,7 +21,6 @@ ruby_block "set environment variables" do
       ENV['POSTGRESQL_HOST']     = host
       ENV['POSTGRESQL_USER']     = database[:postgresql][:password].keys.first
       ENV['POSTGRESQL_PASSWORD'] = database[:postgresql][:password].values.first
-      ENV['POSTGRESQL_PASSWORD'] = database[:postgresql][:password].values.first
       ENV['REDISTOGO_URL']       = "redis://#{host}:6379/"
     else
       Chef::Log.fatal %Q|[!] Can't find a database node in Chef: ('search("node", "role:database")')|
