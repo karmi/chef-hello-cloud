@@ -6,7 +6,8 @@ run_list    "role[base]",
             "recipe[git]",
             "recipe[postgresql::client]",
 
-            "recipe[application]"
+            "recipe[application]",
+            "recipe[application::restore]"
 
 
 override_attributes(
