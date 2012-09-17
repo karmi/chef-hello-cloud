@@ -81,7 +81,16 @@ Vagrant::Config.run do |vagrant|
       config.vm.network :hostonly, node[:ip]
       config.vm.customize { |vm| vm.memory_size = 256 }
 
-      # Enable provisioning with Chef Server
+      # Bootstrap the virtual machine
+      config.vm.provision :shell do |shell|
+        shell.inline = %Q{
+          apt-get update --quiet --yes
+          apt-get install curl vim --quiet --yes
+          test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash
+        }
+      end
+
+      # Configure the node with Chef Server
       config.vm.provision :chef_client do |chef|
         chef.chef_server_url        = "https://api.opscode.com/organizations/#{ENV['CHEF_ORGANIZATION']}"
         chef.validation_key_path    = ENV['CHEF_ORGANIZATION_KEY']
