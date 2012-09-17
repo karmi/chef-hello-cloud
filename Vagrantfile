@@ -21,7 +21,7 @@ rescue LoadError => e
   raise e
 end
 
-node_prefix = `hostname`.chomp
+node_prefix = `hostname`.chomp.gsub(/(\.local)/, '')
 
 nodes = {
 
