@@ -1,3 +1,18 @@
+# Launch all virtual machines with:
+#
+#     vagrant up
+#
+# Launch single virtual machine with:
+#
+#     vagrant up <NAME>
+#
+# The system will be automatically provisioned with Chef.
+#
+# To delete nodes and clients from Chef server, run:
+#
+#   knife node bulk delete <HOSTNAME> -y
+#   knife client bulk delete <HOSTNAME> -y
+#
 begin
   require 'rubygems'
   require 'active_support/core_ext/hash/deep_merge'
@@ -6,9 +21,11 @@ rescue LoadError => e
   raise e
 end
 
+node_prefix = `hostname`.chomp
+
 nodes = {
 
-  'database' => {
+  "#{node_prefix}-database" => {
     :roles    => ['database'],
     :ip       => '33.33.33.20',
     :attributes => {
@@ -18,7 +35,7 @@ nodes = {
     }
   },
 
-  'elasticsearch-1' => {
+  "#{node_prefix}-elasticsearch-1" => {
     :roles    => ['elasticsearch'],
     :ip       => '33.33.33.31',
     :attributes => {
@@ -37,13 +54,13 @@ nodes = {
     }
   },
 
-  'application-1' => {
+  "#{node_prefix}-application-1" => {
     :roles    => ['application'],
     :ip       => '33.33.33.11',
     :attributes => {}
   },
 
-  'load-balancer' => {
+  "#{node_prefix}-load-balancer" => {
     :roles    => ['load_balancer'],
     :ip       => '33.33.33.10',
     :attributes => {}
