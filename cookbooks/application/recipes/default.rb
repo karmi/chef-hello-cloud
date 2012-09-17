@@ -14,7 +14,7 @@ include_recipe "application::ruby"
 #
 ruby_block "set environment variables" do
   block do
-    if database = search("node", "role:database").first
+    if database = search("node", "role:database AND name:#{ENV['HOSTNAME']}*").first
       host = database.attribute?(:cloud) ? database[:cloud][:local_ipv4] : database[:ipaddress]
       Chef::Log.info %Q|Database node: #{host}|
 
@@ -23,16 +23,16 @@ ruby_block "set environment variables" do
       ENV['POSTGRESQL_PASSWORD'] = database[:postgresql][:password].values.first
       ENV['REDISTOGO_URL']       = "redis://#{host}:6379/"
     else
-      Chef::Log.fatal %Q|[!] Can't find a database node in Chef: ('search("node", "role:database")')|
+      Chef::Log.fatal %Q|[!] Can't find a database node in Chef: ('search("node", "role:database AND name:#{ENV['HOSTNAME']}*")')|
     end
 
-    if elasticsearch = search("node", "role:elasticsearch").first
+    if elasticsearch = search("node", "role:elasticsearch AND name:#{ENV['HOSTNAME']}*").first
       host = elasticsearch.attribute?(:cloud) ? elasticsearch[:cloud][:local_ipv4] : elasticsearch[:ipaddress]
       Chef::Log.info %Q|elasticsearch node: #{host}|
 
       ENV['ELASTICSEARCH_URL'] = "http://#{host}:9200"
     else
-      Chef::Log.fatal %Q|[!] Can't find an elasticsearch node in Chef: ('search("node", "role:elasticsearch")')|
+      Chef::Log.fatal %Q|[!] Can't find an elasticsearch node in Chef: ('search("node", "role:elasticsearch AND name:#{ENV['HOSTNAME']}*")')|
     end
   end
 end
