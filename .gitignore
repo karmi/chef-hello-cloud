@@ -7,5 +7,8 @@ Gemfile.lock
 Berksfile.lock
 .vagrant
 
+.chef/*
+!.chef/tmp/.gitignore
+
 site-cookbooks/
-!site-cookbooks/.gitkeep
+!site-cookbooks/.gitignore
