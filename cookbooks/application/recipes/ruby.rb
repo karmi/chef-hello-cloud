@@ -20,6 +20,7 @@ end
 bash "install Ruby #{node.application[:ruby][:version]}" do
   code <<-COMMAND
     su - #{@rvm_username} -m -c 'rvm install #{node.application[:ruby][:version]}'
+    su - #{@rvm_username} -m -c 'rvm system --default'
   COMMAND
 
   environment 'TERM' => 'dumb'
