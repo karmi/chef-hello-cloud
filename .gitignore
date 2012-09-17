@@ -8,7 +8,8 @@ Berksfile.lock
 .vagrant
 
 .chef/*
+!.chef/.gitignore
 !.chef/tmp/.gitignore
 
-site-cookbooks/
+site-cookbooks/*
 !site-cookbooks/.gitignore
