@@ -2,7 +2,7 @@ ruby_block "create the database" do
   block do
     command = <<-COMMAND
       sudo su - #{node.application[:user]} -m -c '
-        cd #{node.application[:dir]}/#{node.application[:name]} && \
+        LC_CTYPE="en_US.UTF-8" cd #{node.application[:dir]}/#{node.application[:name]} && \
         bundle exec rake db:create && \
         bundle exec rake db:schema:load
       '
@@ -14,7 +14,7 @@ ruby_block "create the database" do
 
   not_if do
     command = <<-COMMAND
-      PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
+      LC_CTYPE="en_US.UTF-8" PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
         --host=#{ENV['POSTGRESQL_HOST']} \
         --username=postgres \
         --dbname=gemcutter_development \
@@ -30,7 +30,7 @@ ruby_block "restore the database" do
   block do
     command = <<-COMMAND
       curl -# https://s3.amazonaws.com/webexpo-chef/gemcutter_development.sql | \
-      PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
+      LC_CTYPE="en_US.UTF-8" PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
         --host=#{ENV['POSTGRESQL_HOST']} \
         --username=postgres \
         --dbname=gemcutter_development
@@ -42,7 +42,7 @@ ruby_block "restore the database" do
 
   only_if do
     command = <<-COMMAND
-      PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
+      LC_CTYPE="en_US.UTF-8" PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
         --host=#{ENV['POSTGRESQL_HOST']} \
         --username=postgres \
         --dbname=gemcutter_development \
