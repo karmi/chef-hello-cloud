@@ -26,3 +26,12 @@ bash "install Ruby #{node.application[:ruby][:version]}" do
   environment 'TERM' => 'dumb'
   not_if      "rvm list | grep #{node.application[:ruby][:version]}"
 end
+
+if node.attribute?(:application)
+  bash 'disable rvmrc check"' do
+    code <<-COMMAND
+      echo 'rvm_trust_rvmrcs_flag=1' > /etc/profile.d/rvm.sh
+      source /etc/profile.d/rvm.sh
+    COMMAND
+  end
+end
