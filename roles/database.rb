@@ -10,5 +10,6 @@ run_list    "role[base]",
 override_attributes \
   "postgresql" => {
     "version" => "9.1",
-    "dir"     => "/var/lib/pgsql9/data"
+    "dir"     => "/var/lib/pgsql9/data",
+    "listen_addresses" => "*"
   }
