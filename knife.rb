@@ -34,9 +34,9 @@ client_key               "#{ENV['HOME']}/.chef/#{ENV['USER']}.pem"
 validation_client_name   "#{ENV['CHEF_ORGANIZATION']}-validator"
 validation_key           ENV['CHEF_ORGANIZATION_KEY']
 chef_server_url          "https://api.opscode.com/organizations/#{ENV['CHEF_ORGANIZATION']}"
-cache_options            :path => "#{current_dir}/tmp/checksums"
+cache_options            :path => "#{current_dir}/.chef/tmp/checksums"
 
-cookbook_path            ["#{current_dir}/../site-cookbooks", "#{current_dir}/../cookbooks"]
+cookbook_path            ["#{current_dir}/site-cookbooks", "#{current_dir}/cookbooks"]
 
 knife[:aws_access_key_id]     = ENV['AWS_ACCESS_KEY_ID']
 knife[:aws_secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']
