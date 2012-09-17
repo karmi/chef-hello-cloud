@@ -30,8 +30,10 @@ end
 if node.attribute?(:application)
   bash 'disable rvmrc check"' do
     code <<-COMMAND
-      echo 'rvm_trust_rvmrcs_flag=1' > /etc/profile.d/rvm.sh
+      echo 'rvm_trust_rvmrcs_flag=1' >> /etc/profile.d/rvm.sh
       source /etc/profile.d/rvm.sh
     COMMAND
+
+    not_if { File.read('/etc/profile.d/rvm.sh').include?('rvm_trust_rvmrcs_flag=1') }
   end
 end
