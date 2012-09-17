@@ -15,3 +15,12 @@ if node.attribute?(:vagrant) and node.attribute?(:postgresql)
   end
 
 end
+
+if node.attribute?(:postgresql)
+  # Export locale environment variable
+  bash 'export LC_ALL="en_US.UTF-8"' do
+    code <<-COMMAND
+      echo 'export LC_ALL="en_US.UTF-8"' > /etc/profile.d/locale.sh
+    COMMAND
+  end
+end
