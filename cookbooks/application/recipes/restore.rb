@@ -43,14 +43,13 @@ ruby_block "restore the database" do
     system command
   end
 
-  only_if do
+  not_if do
     command = <<-COMMAND
-      PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
+    PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
         --host=#{ENV['POSTGRESQL_HOST']} \
         --username=postgres \
         --dbname=gemcutter_development \
-        --command 'SELECT id FROM rubygems LIMIT 1;' | \
-      grep '0 rows'
+        --command 'SELECT id FROM rubygems LIMIT 1;'
     COMMAND
     Chef::Log.debug command
 
