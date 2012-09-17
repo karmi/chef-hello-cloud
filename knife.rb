@@ -24,6 +24,19 @@
 #     source ~/.bashrc
 #     source ~/.profile
 #
+
+def check_environment_variable(name, message=nil)
+  unless ENV[name]
+    puts "[!] You have to export the #{name} environment variable", (message || '')
+    exit!(1)
+  end
+end
+
+check_environment_variable 'HOME'
+check_environment_variable 'USER'
+check_environment_variable 'CHEF_ORGANIZATION'
+check_environment_variable 'CHEF_ORGANIZATION_KEY'
+
 current_dir = File.dirname(__FILE__)
 
 log_level                :info
