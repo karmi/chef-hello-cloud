@@ -28,7 +28,7 @@ end
 
 ruby_block "restore the database" do
   # NOTE: Dump created with
-  #       $ pg_dump --format=p --no-owner --no-privileges --exclude-table=delayed_jobs gemcutter_development
+  #       $ pg_dump --format=p --inserts --no-owner --no-privileges --exclude-table=delayed_jobs gemcutter_development
   #
   block do
     command = <<-COMMAND
