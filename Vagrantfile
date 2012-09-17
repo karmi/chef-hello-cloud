@@ -83,13 +83,14 @@ Vagrant::Config.run do |vagrant|
 
       # Enable provisioning with Chef Server
       config.vm.provision :chef_client do |chef|
-        chef.chef_server_url        = "https://api.opscode.com/organizations/webexpo"
-        chef.validation_key_path    = ".chef/webexpo-validator.pem"
-        chef.validation_client_name = "webexpo-validator"
+        chef.chef_server_url        = "https://api.opscode.com/organizations/#{ENV['CHEF_ORGANIZATION']}"
+        chef.validation_key_path    = ENV['CHEF_ORGANIZATION_KEY']
+        chef.validation_client_name = "#{ENV['CHEF_ORGANIZATION']}-validator"
 
         node[:roles].each { |role| chef.add_role role }
 
         chef.json       = { :cloud => {
+                              # We need to fake cloud so Haproxy and others picks up correct IPs
                               :provider    => "vagrant",
                               :local_ipv4  => node[:ip],
                               :public_ipv4 => node[:ip]
