@@ -1,4 +1,4 @@
-@rvm_username  = node.attribute?(:vagrant) ? 'vagrant' : Chef::Config[:ssh_user]
+@rvm_username  = node.attribute?(:vagrant) ? 'vagrant' : Chef::Config[:knife][:ssh_user]
 @rvm_trace     = Chef::Config[:log_level] == 'debug' ? '--trace' : ''
 
 Chef::Log.info "RVM will be installed as user: #{@rvm_username}"
