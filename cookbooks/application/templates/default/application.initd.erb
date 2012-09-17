@@ -21,6 +21,7 @@ export ELASTICSEARCH_URL=<%= ENV['ELASTICSEARCH_URL'] %>
 thin_command ()
 {
   source /usr/local/rvm/scripts/rvm && \
+  source /etc/profile.d/rvm.sh && \
   cd $APPLICATION_DIR && \
   ruby $BUNDLE_CMD exec thin -C $CONFIG_PATH/<%= node.application[:name] %>.yml $1
 }
