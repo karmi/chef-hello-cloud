@@ -14,7 +14,7 @@ bash "install RVM" do
   COMMAND
 
   environment 'TERM' => 'dumb'
-  not_if      "test -d /usr/local/rvm/ && type rvm"
+  not_if      "su - #{@rvm_username} -m -c 'test -d /usr/local/rvm/ && type rvm'"
 end
 
 bash "install Ruby #{node.application[:ruby][:version]}" do
@@ -24,16 +24,14 @@ bash "install Ruby #{node.application[:ruby][:version]}" do
   COMMAND
 
   environment 'TERM' => 'dumb'
-  not_if      "rvm list | grep #{node.application[:ruby][:version]}"
+  not_if      "su - #{@rvm_username} -m -c 'rvm list | grep #{node.application[:ruby][:version]}'"
 end
 
-if node.attribute?(:application)
-  bash 'disable rvmrc check"' do
-    code <<-COMMAND
-      echo 'rvm_trust_rvmrcs_flag=1' >> /etc/profile.d/rvm.sh
-      source /etc/profile.d/rvm.sh
-    COMMAND
+bash 'disable rvmrc check"' do
+  code <<-COMMAND
+    echo 'rvm_trust_rvmrcs_flag=1' >> /etc/profile.d/rvm.sh
+    source /etc/profile.d/rvm.sh
+  COMMAND
 
-    not_if { File.read('/etc/profile.d/rvm.sh').include?('rvm_trust_rvmrcs_flag=1') }
-  end
+  not_if { File.read('/etc/profile.d/rvm.sh').include?('rvm_trust_rvmrcs_flag=1') }
 end
