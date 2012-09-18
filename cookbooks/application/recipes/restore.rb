@@ -62,3 +62,24 @@ ruby_block "restore the database" do
     system command
   end
 end
+
+ruby_block "import the database into elasticsearch" do
+  block do
+    command = <<-COMMAND
+      cd #{node.application[:dir]}/#{node.application[:name]} && \
+        bundle exec rake environment tire:import CLASS='Rubygem'
+    COMMAND
+    Chef::Log.debug command
+
+    system command
+  end
+
+  not_if do
+    command = <<-COMMAND
+      test -n "$ELASTICSEARCH_URL" && curl -f #{ENV['ELASTICSEARCH_URL']}/development_rubygems/_count
+    COMMAND
+    Chef::Log.debug command
+
+    system command
+  end
+end
