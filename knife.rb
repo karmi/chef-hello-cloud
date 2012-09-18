@@ -53,12 +53,12 @@ cookbook_path            ["#{current_dir}/site-cookbooks", "#{current_dir}/cookb
 
 knife[:aws_access_key_id]     = ENV['AWS_ACCESS_KEY_ID']
 knife[:aws_secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']
-knife[:aws_ssh_key_id]        = "#{ENV['USER']}-ec2"
+knife[:aws_ssh_key_id]        = "#{ENV['CHEF_ORGANIZATION']}-ec2"
 knife[:region]                = 'us-east-1'
 
 knife[:image]                 = 'ami-aecd60c7' # (Amazon Linux 2012.03)
 knife[:ssh_user]              = 'ec2-user'
 knife[:use_sudo]              = true
-knife[:ssh_identity_file]     = "#{ENV['HOME']}/.ssh/#{ENV['USER']}-ec2.pem"
+knife[:ssh_identity_file]     = "#{current_dir}/.chef/#{ENV['CHEF_ORGANIZATION']}-ec2.pem"
 knife[:no_host_key_verify]    = true
 knife[:bootstrap_version]     = '10.14.0'
