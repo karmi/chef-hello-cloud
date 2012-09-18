@@ -22,8 +22,8 @@ cookbook 'haproxy'
 
 # Database
 #------------------------------------------------------------------------------
-cookbook 'postgresql'
-cookbook 'redisio'
+cookbook 'postgresql', :git => "git://github.com/vhyza/postgresql.git"
+cookbook 'redisio',    :git => "git://github.com/vhyza/redisio.git"
 
 # Search
 #------------------------------------------------------------------------------
