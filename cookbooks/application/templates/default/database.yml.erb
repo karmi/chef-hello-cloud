@@ -1,0 +1,23 @@
+development: &DEVELOPMENT
+  adapter: postgresql
+  database: gemcutter_development
+  host:     <%= ENV['POSTGRESQL_HOST'] %>
+  username: <%= ENV['POSTGRESQL_USER'] %>
+  password: <%= ENV['POSTGRESQL_PASSWORD'] %>
+  pool: 5
+  timeout: 5000
+
+staging:
+  <<: *DEVELOPMENT
+
+test: &TEST
+  <<: *DEVELOPMENT
+  database: gemcutter_test
+  min_messages: warning
+
+cucumber:
+  <<: *TEST
+
+production:
+  adapter: postgresql
+  database: gemcutter-production
