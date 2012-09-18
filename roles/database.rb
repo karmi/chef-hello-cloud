@@ -9,6 +9,5 @@ run_list    "role[base]",
 
 override_attributes \
   "postgresql" => {
-    "version" => "9.1",
     "listen_addresses" => "*"
   }
