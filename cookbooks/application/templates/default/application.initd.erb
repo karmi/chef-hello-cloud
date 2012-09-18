@@ -15,8 +15,8 @@ BUNDLE_CMD=/usr/local/rvm/gems/ruby-<%= node.application[:ruby][:version] %>@glo
 
 APPLICATION_DIR=<%= "#{node.application[:dir]}/#{node.application[:name]}" %>
 
-export REDISTOGO_URL=<%= ENV['REDISTOGO_URL'] %>
-export ELASTICSEARCH_URL=<%= ENV['ELASTICSEARCH_URL'] %>
+<% if ENV['REDISTOGO_URL'] %>export REDISTOGO_URL=<%= ENV['REDISTOGO_URL'] %><% end %>
+<% if ENV['ELASTICSEARCH_URL'] %>export ELASTICSEARCH_URL=<%= ENV['ELASTICSEARCH_URL'] %><% end %>
 
 thin_command ()
 {
