@@ -58,6 +58,7 @@ knife[:region]                = 'us-east-1'
 
 knife[:image]                 = 'ami-aecd60c7' # (Amazon Linux 2012.03)
 knife[:ssh_user]              = 'ec2-user'
+knife[:ssh_attribute]         = 'ec2.public_hostname'
 knife[:use_sudo]              = true
 knife[:ssh_identity_file]     = ENV['SSH_IDENTITY_FILE']
 knife[:no_host_key_verify]    = true
