@@ -59,6 +59,6 @@ knife[:region]                = 'us-east-1'
 knife[:image]                 = 'ami-aecd60c7' # (Amazon Linux 2012.03)
 knife[:ssh_user]              = 'ec2-user'
 knife[:use_sudo]              = true
-knife[:ssh_identity_file]     = "#{current_dir}/.chef/#{ENV['CHEF_ORGANIZATION']}-ec2.pem"
+knife[:ssh_identity_file]     = ENV['SSH_IDENTITY_FILE']
 knife[:no_host_key_verify]    = true
 knife[:bootstrap_version]     = '10.14.0'
