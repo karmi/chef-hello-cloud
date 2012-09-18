@@ -6,6 +6,12 @@ ruby_block "create the database" do
         --username=postgres \
         --owner=postgres \
         gemcutter_development
+
+      PGPASSWORD=#{ENV['POSTGRESQL_PASSWORD']} psql \
+      --host=#{ENV['POSTGRESQL_HOST']} \
+      --username=postgres \
+      --dbname=gemcutter_development \
+      --command ''
     COMMAND
     Chef::Log.debug command
 
