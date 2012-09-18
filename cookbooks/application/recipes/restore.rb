@@ -66,8 +66,9 @@ end
 ruby_block "import the database into elasticsearch" do
   block do
     command = <<-COMMAND
-      cd #{node.application[:dir]}/#{node.application[:name]} && \
-        bundle exec rake environment tire:import CLASS='Rubygem'
+      sudo su - #{node.application[:user]} -m -c 'cd #{node.application[:dir]}/#{node.application[:name]} && \
+         ELASTICSEARCH_URL=#{ENV['ELASTICSEARCH_URL']} REDISTOGO_URL=#{ENV['REDISTOGO_URL']} \
+         bundle exec rake environment tire:import CLASS="Rubygem"'
     COMMAND
     Chef::Log.debug command
 
