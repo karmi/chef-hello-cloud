@@ -102,6 +102,17 @@ ruby_block "save current revision" do
   block { node.application[:current_revision] = current_revision_sha }
 end
 
+# Delete default Nginx configuration files
+#
+bash "delete default configuration files" do
+  code <<-COMMAND
+    rm -f /etc/nginx/conf.d/*
+  COMMAND
+
+  only_if "test -f /etc/nginx/conf.d/default.conf"
+  notifies :reload, "service[nginx]"
+end
+
 # Create application configuration file for Nginx
 #
 template "#{node[:nginx][:dir]}/sites-enabled/#{node.application[:name]}.conf" do
