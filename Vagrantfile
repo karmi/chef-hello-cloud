@@ -37,6 +37,7 @@ nodes = {
 
   "#{node_prefix}-elasticsearch-1" => {
     :roles    => ['elasticsearch'],
+    :recipes  => ['java'],
     :ip       => '33.33.33.31',
     :attributes => {
       :elasticsearch => {
@@ -96,7 +97,8 @@ Vagrant::Config.run do |vagrant|
         chef.validation_key_path    = ENV['CHEF_ORGANIZATION_KEY']
         chef.validation_client_name = "#{ENV['CHEF_ORGANIZATION']}-validator"
 
-        node[:roles].each { |role| chef.add_role role }
+        node[:recipes].each { |r| chef.add_recipe r } if node[:recipes]
+        node[:roles].each   { |r| chef.add_role r   }
 
         chef.json       = { :cloud => {
                               # We need to fake cloud so Haproxy and others picks up correct IPs
