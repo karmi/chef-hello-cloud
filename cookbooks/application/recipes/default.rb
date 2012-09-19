@@ -198,6 +198,6 @@ ruby_block "configure the application for Thin" do
 
   not_if "test -f /etc/thin/#{node.application[:name]}.yml"
 
-  notifies :start,  "service[application]"
+  notifies :restart,  "service[application]"
   notifies :reload, "service[nginx]"
 end
