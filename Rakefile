@@ -1,13 +1,23 @@
 require 'json'
 
-def notify options={}
-  return nil unless system("which terminal-notifier")
+begin
+  path = Dir[ Gem.path.first + '/gems' + '/terminal-notifier-*/lib/terminal-notifier.rb' ].first
+  require path
+rescue Exception
+  return nil
+end
 
-  system "terminal-notifier -title '#{options[:name]}' -subtitle '#{options[:public_ip]}' -message '#{options[:message]}' -open 'http://#{options[:public_ip]}'"
+
+def notify options={}
+  return nil unless defined?(TerminalNotifier)
+
+  TerminalNotifier.notify options[:message],
+                          title: options[:name],
+                          subtitle: options[:public_ip],
+                          open: "http://#{options[:public_ip]}"
 end
 
 namespace :server do
-
 
   desc "Create server with specified name and role"
   task :create do
@@ -46,6 +56,24 @@ namespace :server do
       system "knife client delete #{ENV["NAME"]} --yes"
     else
       puts "[!] No server for node #{ENV["NAME"]} found"
+    end
+
+  end
+
+  desc "Delete and terminate all nodes"
+  task :teardown do
+    prefix = ENV['PREFIX'] || 'ec2'
+
+    nodes = JSON.parse(`knife search node name:#{prefix}* --format json --attribute ec2`) rescue {}
+
+    unless nodes.empty?
+      nodes["rows"].each do |node|
+        instance_id = node["ec2"]["instance_id"] rescue nil
+        system "knife ec2 server delete #{instance_id.strip} --print-after --yes" if instance_id
+      end
+
+      system "knife node bulk delete '#{prefix}' --yes"
+      system "knife client bulk delete '#{prefix}' --yes"
     end
 
   end
