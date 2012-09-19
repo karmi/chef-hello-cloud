@@ -1,3 +1,5 @@
+require 'json'
+
 namespace :server do
 
 
@@ -23,26 +25,18 @@ namespace :server do
 
     ["NAME"].each { |argument| ( puts("[!] You need to specify #{argument}"); exit(1) ) unless ENV[argument] }
 
-    nodes = `knife status --no-color`
+    node = JSON.parse(`knife node show #{ENV["NAME"]} --format json --attribute ec2`) rescue nil
 
-    attrs = nodes.split("\n").select { |line| line =~ Regexp.new( Regexp.escape(ENV["NAME"]) ) }.first.split(',', 5) rescue []
-    ip = attrs[3]
+    ( puts "[!] No node named #{ENV["NAME"]} found"; exit(1) ) unless node
 
-    if ip
-      servers = `knife ec2 server list --no-color`
-      attrs = servers.split("\n").select { |line| line =~ Regexp.new( Regexp.escape(ip.strip) ) }.first.split(/\s+/, 8) rescue []
+    instance_id = node["ec2"]["instance_id"]
 
-      instance_id = attrs[0]
-
-      if instance_id
-        system "knife ec2 server delete #{instance_id.strip} --print-after --yes"
-        system "knife node delete #{ENV["NAME"]} --yes"
-        system "knife client delete #{ENV["NAME"]} --yes"
-      else
-        puts "[!] No server for node #{ENV["NAME"]} found"
-      end
+    if instance_id
+      system "knife ec2 server delete #{instance_id.strip} --print-after --yes"
+      system "knife node delete #{ENV["NAME"]} --yes"
+      system "knife client delete #{ENV["NAME"]} --yes"
     else
-      puts "[!] No node named #{ENV["NAME"]} found"
+      puts "[!] No server for node #{ENV["NAME"]} found"
     end
 
   end
