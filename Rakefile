@@ -1,5 +1,11 @@
 require 'json'
 
+def notify options={}
+  return nil unless system("which terminal-notifier")
+
+  system "terminal-notifier -title '#{options[:name]}' -subtitle '#{options[:public_ip]}' -message '#{options[:message]}' -open 'http://#{options[:public_ip]}'"
+end
+
 namespace :server do
 
 
@@ -18,6 +24,9 @@ namespace :server do
                                     --flavor #{flavor} \
                                     --distro amazon"
 
+    node     = JSON.parse(`knife node show #{ENV["NAME"]} --format json --attribute ec2`) rescue nil
+    duration = ((Time.now-start).to_i/60.0).round
+    notify name: ENV["NAME"], public_ip: node["ec2"]["public_hostname"], message: "Created in #{duration} minutes" if node
   end
 
   desc "Delete server"
