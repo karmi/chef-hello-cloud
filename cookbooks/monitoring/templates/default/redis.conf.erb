@@ -1,0 +1,9 @@
+<%- node.redisio['servers'].each do |redis| %>
+  check process redis with pidfile "/var/run/redis/<%= redis['port'] %>/redis_<%= redis['port'] %>.pid"
+    start program = "/etc/init.d/redis<%= redis['port'] %> start" with timeout 60 seconds
+    stop program  = "/etc/init.d/redis<%= redis['port'] %> stop"
+    if cpu > 90% for 15 cycles then alert
+    if totalmem > 90% for 15 cycles then alert
+    if loadavg(15min) greater than 10 for 50 cycles then alert
+    group redis
+<%- end -%>
