@@ -14,6 +14,7 @@ cookbook 'apt'
 cookbook 'curl'
 cookbook 'vim'
 cookbook 'git'
+cookbook 'monit'
 
 # Webserver
 #------------------------------------------------------------------------------
