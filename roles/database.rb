@@ -6,7 +6,6 @@ run_list    "role[base]",
             "recipe[redisio::enable]",
             "recipe[postgresql::server]",
             "recipe[application::config]",
-            "recipe[monit]",
             "recipe[monitoring]",
             "recipe[monitoring::redis]",
             "recipe[monitoring::postgresql]"
