@@ -1,7 +1,10 @@
 name        "load_balancer"
 description "Application load balancer settings"
 
-run_list    "role[base]", "recipe[haproxy::app_lb]"
+run_list    "role[base]",
+            "recipe[haproxy::app_lb]",
+            "recipe[monitoring]",
+            "recipe[monitoring::haproxy]"
 
 override_attributes(
 	"haproxy" => {
