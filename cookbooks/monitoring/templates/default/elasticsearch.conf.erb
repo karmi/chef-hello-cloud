@@ -1,0 +1,7 @@
+check process elasticsearch with pidfile <%= "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid" %>
+  start program = "/etc/init.d/elasticsearch restart" with timeout 60 seconds
+  stop program  = "/etc/init.d/elasticsearch stop"
+  if cpu > 90% for 15 cycles then alert
+  if totalmem > 90% for 15 cycles then alert
+  if loadavg(15min) greater than 10 for 50 cycles then alert
+  group elasticsearch
