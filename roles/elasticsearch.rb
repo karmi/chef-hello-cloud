@@ -2,12 +2,13 @@ name        "elasticsearch"
 description "Configuration for elasticsearch nodes"
 
 run_list    "role[base]",
-            "recipe[monitoring]",
             "recipe[nginx]",
-            "recipe[monitoring::nginx]",
             "recipe[elasticsearch]",
             "recipe[elasticsearch::plugin_aws]",
-            "recipe[elasticsearch::proxy_nginx]"
+            "recipe[elasticsearch::proxy_nginx]",
+            "recipe[monitoring]",
+            "recipe[monitoring::nginx]",
+            "recipe[monitoring::elasticsearch]"
 
 override_attributes(
   "elasticsearch" => {
