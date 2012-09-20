@@ -1,6 +1,6 @@
 set daemon <%= node.monit[:poll_period] %> with start delay <%= node.monit[:start_delay] %>
 
-set logfile syslog facility log_daemon
+set logfile <%= node.monit[:log] %>
 set pidfile <%= node.monit[:pid] %>
 
 <%# Enable HTTP: Allow authenticated users when configured, otherwise only local connections %>

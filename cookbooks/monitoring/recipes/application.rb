@@ -1,0 +1,1 @@
+monitrc("application")

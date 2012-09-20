@@ -1,4 +1,4 @@
-default.monit[:http_auth] = { :username => "monit", :password => "monitoring" }
+default.monit[:http_auth]    = { :username => "monit", :password => "monit" }
 default.monit[:poll_period]  = 60
 default.monit[:start_delay]  = 0
 
