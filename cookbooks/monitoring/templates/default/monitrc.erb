@@ -1,0 +1,14 @@
+set daemon <%= node.monit[:poll_period] %> with start delay <%= node.monit[:start_delay] %>
+
+set logfile <%= node.monit[:log] %>
+set pidfile <%= node.monit[:pid] %>
+
+<%# Enable HTTP: Allow authenticated users when configured, otherwise only local connections %>
+set httpd port 2812
+<%- unless node.monit[:http_auth].values.empty? -%>
+  allow "<%= node.monit[:http_auth]['username'] %>":"<%= node.monit[:http_auth]['password'] %>"
+<%- else -%>
+  allow localhost
+<%- end %>
+
+include /etc/monit/conf.d/*.conf

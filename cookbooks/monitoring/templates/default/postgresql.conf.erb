@@ -1,0 +1,7 @@
+check process postgresql with pidfile <%= node.postgresql[:pidfile] %>
+  start program = "/etc/init.d/postgresql start" with timeout 60 seconds
+  stop program  = "/etc/init.d/postgresql stop"
+  if cpu > 90% for 15 cycles then alert
+  if totalmem > 90% for 15 cycles then alert
+  if loadavg(15min) greater than 10 for 50 cycles then alert
+  group postgresql

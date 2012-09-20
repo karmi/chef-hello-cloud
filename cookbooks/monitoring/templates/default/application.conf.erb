@@ -1,0 +1,9 @@
+<%- node.application[:thin][:servers].times.each do |i| -%>
+  check process thin_<%= i %> with pidfile <%= "#{node.application[:thin][:pids]}/#{node.application[:name]}.#{i}.pid" %>
+    start program = "/etc/init.d/application start" with timeout 60 seconds
+    stop program  = "/etc/init.d/application stop"
+    if cpu > 90% for 15 cycles then alert
+    if totalmem > 90% for 15 cycles then alert
+    if loadavg(15min) greater than 10 for 50 cycles then alert
+    group thin
+<%- end -%>

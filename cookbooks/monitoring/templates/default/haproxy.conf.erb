@@ -1,0 +1,7 @@
+check process haproxy with pidfile "/var/run/haproxy.pid"
+  start program = "/etc/init.d/haproxy start" with timeout 60 seconds
+  stop program  = "/etc/init.d/haproxy stop"
+  if cpu > 90% for 15 cycles then alert
+  if totalmem > 90% for 15 cycles then alert
+  if loadavg(15min) greater than 10 for 50 cycles then alert
+  group haproxy
