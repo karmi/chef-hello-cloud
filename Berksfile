@@ -1,6 +1,6 @@
 # Install cookbooks with:
 #
-#     $ berks install --shims ./site-cookbooks/
+#     $ berks install --path ./site-cookbooks/
 #
 # Pre-requisites:
 #

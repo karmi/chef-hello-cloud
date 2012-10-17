@@ -49,7 +49,7 @@ Once you have your Chef Server credentials at hand, clone the repo:
 
 ... install the site cookbooks with [Berkshelf](http://berkshelf.com):
 
-    berks install --shims ./site-cookbooks/
+    berks install --path ./site-cookbooks/
 
 ... upload the cookbooks to Chef Server:
 
