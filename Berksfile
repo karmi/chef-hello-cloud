@@ -29,4 +29,4 @@ cookbook 'redisio',    :git => "git://github.com/vhyza/redisio.git"
 # Search
 #------------------------------------------------------------------------------
 cookbook 'java'
-cookbook 'elasticsearch', :git => 'git://github.com/karmi/cookbook-elasticsearch.git'
+cookbook 'elasticsearch', :git => 'git://github.com/elasticsearch/cookbook-elasticsearch.git'
