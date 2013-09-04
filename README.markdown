@@ -73,6 +73,13 @@ To build the stack in Amazon EC2, in addition to Chef Server credentials, you ne
 
     export SSH_IDENTITY_FILE='/path/to/your/name-ec2.pem'
 
+You also need to create the following security groups:
+
+* `database` with ports 80 and 2812 opened to the outside world
+* `elasticsearch` with ports 9200 and 9300 opened to the `application` and `elasticsearch` groups
+* `application` with ports 80 and 2812 opened to the outside world
+* `load_balancer` with ports 80, 2812 and 22002 opened to the outside world
+
 After that, just create the servers with Rake commands.
 
 First, create the `database` and `elasticsearch` servers:
